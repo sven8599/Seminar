@@ -21,17 +21,21 @@ def oznacavanje(ulaz, tau, n):
 
 
 if __name__ == '__main__':
-
-    #ulaz je lista povrata 
-    # 1. kako ce biti zapisana
+    # Učitavanje podataka sa https://finance.yahoo.com/quote/AAPL/history?p=AAPL
+    file = open("AAPL.csv", "r")
+    
+    podatci = file.readlines()
     ulaz = []
     
-    #ulaz = [Pt1 Pt2 .. Ptn]
-    ulaz = [1, 20, 3, 4 ,5, 6 ,7 ,3, 9, 10]
-    print(ulaz)
+    for i in range(1, len(podatci)):
+        redak = podatci[i].split(",")
+        # Date,Open,High,Low,Close,Adj Close,Volume
+        # Uzimamo Open
+        ulaz.append(float(redak[1]))
 
+    # Postavljanje parametara za probni primjer
     tau = 0
-    n = 3
+    n = 10
     
     oznaceno, povrat = oznacavanje(ulaz, tau, n)
     print(oznaceno)
@@ -49,8 +53,11 @@ if __name__ == '__main__':
     
     print(buysell)
 
-    n_range = [1, 2, 3]
-    tau_range = [0, 0.5, -0.5]
+    # Postavljanje parametara za traženje najvećeg sharp ratio-a za različite kombinacije 'tau' i 'n'
+    n = len(ulaz)
+    n_range = list(range(n))[1:n-1]
+    print(len(n_range))
+    tau_range = [0, 0.05, -0.05, 0.01, -0.01]
 
     max_sharp_ratio = float('-inf')
     kombinacija = None
@@ -66,4 +73,7 @@ if __name__ == '__main__':
     
     print("-------------------")
     print("Max sharp ratio is: {} for n={} and tau={}".format(max_sharp_ratio, kombinacija[0], kombinacija[1]))
+
+
+    
 
